@@ -13,8 +13,9 @@ usort($articles , function($article1, $article2) {
 
 
 function getArticles($n=null){
- 
-    global $articles;
+    try
+    {
+        global $articles;
  
     foreach($articles as $article){
         if(strtotime($article['date_pub']) < time()){
@@ -33,6 +34,12 @@ function getArticles($n=null){
       }  
  
       return $t;
+    }
+    catch (Exception $e)
+    {
+        die('Erreur : ' . $e->getMessage());
+    }
+    
       
     };
 

@@ -6,7 +6,11 @@ include_once("db.php")
 <?php 
 //creating records into the database articles
 if ( isset($_POST['submit'])) {
-    
+    if(!isset($_POST['titre'])||!isset($_POST['texte'])||!isset($_POST['auteur'])||!isset($_POST['date_pub'])){
+        echo "<div class='alert alert-danger' role='alert'>
+        Veuillez remplir le formulaire !
+      </div>";
+    }
     $sqlQuery = 'INSERT INTO articles(titre, texte, auteur, date_pub) VALUES (:titre, :texte, :auteur, :date_pub)';
     
     $insertArticle = $db->prepare($sqlQuery);
@@ -69,14 +73,14 @@ if ( isset($_POST['submit'])) {
                     </div>
                    
                     <div class="form-group row">
-                        <label for="description" class="col-md-2 col-form-label">Description</label>
+                        <label for="texte" class="col-md-2 col-form-label">Description</label>
                         <div class="col-md-10">
                             <textarea class="form-control"  name="texte" placeholder="" rows="12"></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="offset-md-2 col-md-10">
-                        <button type="submit" name="submit" class="btn btn-primary">Publier</button>
+                        <input type="submit" name="submit" class="btn btn-primary" value='Publier'/>
                         </div>
                     </div>
                 </form>
