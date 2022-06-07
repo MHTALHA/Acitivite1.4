@@ -2,6 +2,11 @@
 include_once("header.php");
 ?>
 <?php include_once("utils.php"); ?>
+<?php if(isset($_GET['id'])) {
+deleteArticle($_GET['id']);
+}
+?>
+
 
 <?php $articles=getArticles() ;?>
 <?php foreach($articles as $article):?>
@@ -11,7 +16,7 @@ include_once("header.php");
     <h6 class="card-subtitle mb-2 text-muted">Auteur :<?php echo $article['auteur'] ?></h6>
     <h6 class="card-subtitle mb-2 text-muted">Date de publication : <?php echo $article['date_pub'] ?></h6>
     <p class="card-text">Description: <?php echo $article['texte'] ?></p>
-    <button  name="delete" class="btn btn-danger" >Delete</button>
+    <a type="submit" name="delete" class="btn btn-danger" href="index.php?id=<?php echo $article['id']?>" >Delete</a>
   </div>
 </div>
 
