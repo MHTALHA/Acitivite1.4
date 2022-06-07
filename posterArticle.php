@@ -1,5 +1,25 @@
 <?php include_once("header.php") ?>
+<?php 
+//connection to database
+include_once("db.php")
+?>
+<?php 
+//creating records into the database articles
+if ( isset($_POST['submit'])) {
+    
+    $sqlQuery = 'INSERT INTO articles(titre, texte, auteur, date_pub) VALUES (:titre, :texte, :auteur, :date_pub)';
+    
+    $insertArticle = $db->prepare($sqlQuery);
+    
+    $insertArticle->execute([
+        'titre' => $_POST['titre'],
+        'texte' => $_POST['texte'],
+        'auteur' => $_POST['auteur'],
+        'date_pub' => $_POST['date'], 
+    ]);
+}
 
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,65 +43,12 @@
 
 <?php
 
-//array();
-$articles[] = array(); // create empty array
-
-$myFile = "articles.json";
-
-if(isset($_POST["submit"])){
-if((isset($_POST["titre"])) && (isset($_POST["auteur"])) && (isset($_POST["date"]) )&& (isset($_POST["date"])) && (isset($_POST["description"]))){
-    if(!empty($_POST["titre"]) && !empty($_POST["auteur"]) && !empty($_POST["date"])&& !empty($_POST["date"]) && !empty($_POST["description"])){
-        try
-        {
-          //Get form data
-          $formdata = array(
-           'id'=>$_REQUEST['id'],
-           'titre'=> htmlspecialchars($_POST['titre']), 
-           'auteur' => htmlspecialchars($_POST['auteur']),
-           'date'=> $_POST['date'], 
-           'description'=> strip_tags($_POST['description']) 
-           
-          );
-       
-       
-         //Get data from existing json file
-          $jsondata = file_get_contents($myFile);
-       //print_r($jsondata)."<br/>";
-          // converts json data into array
-          $articles = json_decode($jsondata, true);
-        //print_r($articles)."<br/>";
-          // Push article data to array
-          array_push($articles,$formdata);
-       
-          //Convert updated array to JSON
-          $jsondata = json_encode($articles, JSON_PRETTY_PRINT);
-       
-          //write json data into data.json file
-          if(file_put_contents($myFile, $jsondata)) {
-           echo "<div class='alert alert-success' role='alert'>
-           JSON file a été créée avec succée...!
-         </div>";
-         print_r($jsondata);
-           }
-          else 
-               echo "error";
-       
-          }
-       
-           catch (Exception $e) {
-               echo 'Caught exception: ',  $e->getMessage(), "\n";
-         }
-        
-    }
-}
-};
-
 
 
    ?>
 
                 <form  action="" method="POST" >
-                <input type="hidden" name="id" value="<?php echo  $id=uniqid();?>" />
+              
                     <div class="form-group row">
                         <label for="titre" class="col-md-2 col-form-label">Titre</label>
                         <div class="col-md-10">
@@ -104,7 +71,7 @@ if((isset($_POST["titre"])) && (isset($_POST["auteur"])) && (isset($_POST["date"
                     <div class="form-group row">
                         <label for="description" class="col-md-2 col-form-label">Description</label>
                         <div class="col-md-10">
-                            <textarea class="form-control"  name="description" placeholder="" rows="12"></textarea>
+                            <textarea class="form-control"  name="texte" placeholder="" rows="12"></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
